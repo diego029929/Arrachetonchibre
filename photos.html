@@ -211,7 +211,6 @@
       <img src="https://via.placeholder.com/300x180.png?text=Photo+3" alt="Photo 3">
       <div class="title-placeholder">Forêt verdoyante</div>
     </div>
-    <!-- Ajoute autant de photos que nécessaire -->
   </div>
 
   <div class="no-result" id="noResult">Aucun résultat</div>
@@ -221,13 +220,13 @@
   </div>
 
   <script>
-    // ---- Menu déroulant ----
+    // Menu déroulant
     function toggleFilter() {
       const menu = document.getElementById("filterMenu");
       menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 
-    // ---- Limiteur de photos ----
+    // Limiteur de photos
     const photoContainer = document.getElementById("photoContainer");
     const loadMoreBtn = document.getElementById("loadMore");
     const maxInitialPhotos = 20;
@@ -247,7 +246,27 @@
 
     limitPhotos();
 
-    // ---- Barre de recherche intelligente ----
+    // Barre de recherche intelligente
     const searchInput = document.getElementById("searchInput");
     const noResult = document.getElementById("noResult");
+    const photos = Array.from(photoContainer.querySelectorAll(".photo-card"));
 
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase().trim();
+      let anyVisible = false;
+
+      photos.forEach(photo => {
+        const title = photo.dataset.title.toLowerCase();
+        if(title.includes(query) || query === "") {
+          photo.style.display = "flex";
+          anyVisible = true;
+        } else {
+          photo.style.display = "none";
+        }
+      });
+
+      noResult.style.display = anyVisible ? "none" : "block";
+    });
+  </script>
+</body>
+</html>

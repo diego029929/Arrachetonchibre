@@ -130,7 +130,6 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
 
-    /* ---- Image ---- */
     .photo-card img {
       width: 100%;
       height: 180px;
@@ -138,7 +137,6 @@
       display: block;
     }
 
-    /* ---- Titre photo ---- */
     .photo-card .title-placeholder {
       font-size: 18px;
       font-weight: 600;
@@ -168,6 +166,15 @@
       background: #0052d4;
       transform: scale(1.05);
     }
+
+    /* ---- Message Aucun résultat ---- */
+    .no-result {
+      text-align: center;
+      font-size: 20px;
+      color: #888;
+      display: none;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -176,7 +183,7 @@
   </header>
 
   <div class="search-bar">
-    <input type="text" placeholder="Rechercher une photo...">
+    <input type="text" id="searchInput" placeholder="Rechercher une photo...">
   </div>
 
   <h2 class="section-title">Photos</h2>
@@ -192,33 +199,35 @@
 
   <div class="photos" id="photoContainer">
     <!-- Exemple de photos -->
-    <div class="photo-card">
+    <div class="photo-card" data-title="Montagne enneigée">
       <img src="https://via.placeholder.com/300x180.png?text=Photo+1" alt="Photo 1">
-      <div class="title-placeholder">Titre 1</div>
+      <div class="title-placeholder">Montagne enneigée</div>
     </div>
-    <div class="photo-card">
+    <div class="photo-card" data-title="Coucher de soleil plage">
       <img src="https://via.placeholder.com/300x180.png?text=Photo+2" alt="Photo 2">
-      <div class="title-placeholder">Titre 2</div>
+      <div class="title-placeholder">Coucher de soleil plage</div>
     </div>
-    <div class="photo-card">
+    <div class="photo-card" data-title="Forêt verdoyante">
       <img src="https://via.placeholder.com/300x180.png?text=Photo+3" alt="Photo 3">
-      <div class="title-placeholder">Titre 3</div>
+      <div class="title-placeholder">Forêt verdoyante</div>
     </div>
     <!-- Ajoute autant de photos que nécessaire -->
   </div>
+
+  <div class="no-result" id="noResult">Aucun résultat</div>
 
   <div class="load-more-container">
     <button id="loadMore">Afficher plus</button>
   </div>
 
   <script>
-    // Menu déroulant
+    // ---- Menu déroulant ----
     function toggleFilter() {
       const menu = document.getElementById("filterMenu");
       menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 
-    // Limiteur de photos
+    // ---- Limiteur de photos ----
     const photoContainer = document.getElementById("photoContainer");
     const loadMoreBtn = document.getElementById("loadMore");
     const maxInitialPhotos = 20;
@@ -226,19 +235,19 @@
     function limitPhotos() {
       const photos = photoContainer.querySelectorAll(".photo-card");
       photos.forEach((photo, index) => {
-        if (index >= maxInitialPhotos) photo.style.display = "none";
+        if(index >= maxInitialPhotos) photo.style.display = "none";
       });
     }
 
     loadMoreBtn.addEventListener("click", () => {
       const hiddenPhotos = photoContainer.querySelectorAll(".photo-card[style*='display: none']");
       hiddenPhotos.forEach(photo => photo.style.display = "block");
-      loadMoreBtn.style.display = "none"; // cacher le bouton après affichage complet
+      loadMoreBtn.style.display = "none";
     });
 
-    // Initialiser la limite au chargement
     limitPhotos();
-  </script>
-</body>
-</html>
+
+    // ---- Barre de recherche intelligente ----
+    const searchInput = document.getElementById("searchInput");
+    const noResult = document.getElementById("noResult");
 

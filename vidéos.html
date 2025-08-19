@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste Vidéos</title>
+  <!-- Google Font Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- Style général ---- */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f2f5;
+      color: #333;
+    }
+
+    /* ---- Bannière ---- */
+    header {
+      background: #f0f2f5;
+      padding: 30px;
+      text-align: center;
+    }
+    .banner {
+      display: inline-block;
+      background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+      color: white;
+      padding: 15px 40px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    /* ---- Barre de recherche ---- */
+    .search-bar {
+      text-align: center;
+      margin: 25px 0;
+    }
+    .search-bar input {
+      width: 60%;
+      max-width: 500px;
+      padding: 12px 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .search-bar input:focus {
+      border-color: #4364f7;
+      box-shadow: 0 4px 10px rgba(0,82,212,0.2);
+    }
+
+    /* ---- Titre section Vidéos ---- */
+    .section-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: #0052d4;
+      margin: 15px 0 25px 0;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ---- Bouton filtre ---- */
+    .filter {
+      width: 220px;
+      margin: 0 auto 30px auto;
+      position: relative;
+    }
+    .filter button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      background: #4364f7;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+    .filter button:hover {
+      background: #0052d4;
+      transform: scale(1.03);
+    }
+
+    /* ---- Menu déroulant ---- */
+    .filter-options {
+      display: none;
+      position: absolute;
+      top: 110%;
+      left: 0;
+      right: 0;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      overflow: hidden;
+    }
+    .filter-options div {
+      padding: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .filter-options div:hover {
+      background: #f0f2f5;
+    }
+
+    /* ---- Grille vidéos ---- */
+    .videos {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 20px;
+    }
+
+    /* ---- Carte vidéo ---- */
+    .video-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* ---- Placeholder vidéo ---- */
+    .video-card .video-placeholder {
+      width: 100%;
+      height: 160px;
+      background: linear-gradient(135deg, #ddd, #eee);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #666;
+      font-style: italic;
+    }
+
+    /* ---- Titre vidéo ---- */
+    .video-card .title-placeholder {
+      font-size: 18px;
+      font-weight: 600;
+      color: #333;
+      padding: 15px;
+      text-align: center;
+    }
+
+    /* ---- Bouton afficher plus ---- */
+    .load-more-container {
+      text-align: center;
+      margin: 30px 0 50px 0;
+    }
+    .load-more-container button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .load-more-container button:hover {
+      background: #0052d4;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="banner">Nom du Site</div>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Rechercher une vidéo...">
+  </div>
+
+  <h2 class="section-title">Vidéos</h2>
+
+  <div class="filter">
+    <button onclick="toggleFilter()">Trier par ▼</button>
+    <div class="filter-options" id="filterMenu">
+      <div>Date</div>
+      <div>Longueur</div>
+      <div>Meilleures vidéos</div>
+      <div>Pertinence</div>
+    </div>
+  </div>
+
+  <div class="videos" id="videoContainer">
+    <!-- Exemple de 30 vidéos -->
+    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
+    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
+    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
+    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
+    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
+    <!-- Ajoute plus de blocs si nécessaire -->
+  </div>
+
+  <div class="load-more-container">
+    <button id="loadMore">Afficher plus</button>
+  </div>
+
+  <script>
+    // Menu déroulant
+    function toggleFilter() {
+      const menu = document.getElementById("filterMenu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    // Limiteur de vidéos
+    const videoContainer = document.getElementById("videoContainer");
+    const loadMoreBtn = document.getElementById("loadMore");
+    const maxInitialVideos = 20;
+
+    function limitVideos() {
+      const videos = videoContainer.querySelectorAll(".video-card");
+      videos.forEach((video, index) => {
+        if (index >= maxInitialVideos) video.style.display = "none";
+      });
+    }
+
+    loadMoreBtn.addEventListener("click", () => {
+      const hiddenVideos = videoContainer.querySelectorAll(".video-card[style*='display: none']");
+      hiddenVideos.forEach(video => video.style.display = "block");
+      loadMoreBtn.style.display = "none"; // cacher le bouton après affichage complet
+    });
+
+    // Initialiser la limite au chargement
+    limitVideos();
+  </script>
+</body>
+</html>

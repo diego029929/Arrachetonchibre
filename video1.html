@@ -1,263 +1,225 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Je joue à Action ou Vérité avec mon demi-frère !</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin:0; padding:0;
-      background:#f0f2f5;
-      color:#333;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Je joue à Action ou Vérité avec mon demi-frère !</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin:0; padding:0;
+    background:#f0f2f5;
+    color:#333;
+  }
 
-    header { text-align:center; padding:30px; background:#f0f2f5; }
-    .banner {
-      display:inline-block;
-      background: linear-gradient(135deg,#0052d4,#4364f7,#6fb1fc);
-      color:white;
-      padding:15px 40px;
-      font-size:28px;
-      font-weight:700;
-      border-radius:50px;
-      box-shadow:0 4px 15px rgba(0,0,0,0.2);
-    }
+  header { text-align:center; padding:30px; background:#f0f2f5; }
+  .banner {
+    display:inline-block;
+    background: linear-gradient(135deg,#0052d4,#4364f7,#6fb1fc);
+    color:white;
+    padding:15px 40px;
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:1px;
+    border-radius:50px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.2);
+  }
 
-    .video-container {
-      max-width:900px;
-      margin:40px auto;
-      position:relative;
-      background:#000;
-      border-radius:12px;
-      overflow:hidden;
-    }
+  .search-bar { text-align:center; margin:20px 0; }
+  .search-bar input {
+    width:60%; max-width:500px;
+    padding:12px 15px;
+    font-size:16px;
+    border:1px solid #ccc;
+    border-radius:25px;
+    outline:none;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+  .search-bar input:focus {
+    border-color:#4364f7;
+    box-shadow:0 4px 10px rgba(0,82,212,0.2);
+  }
 
-    video {
-      width:100%;
-      display:block;
-      border-radius:12px;
-    }
+  .video-container {
+    max-width:800px;
+    margin:40px auto;
+    position:relative;
+    border-radius:15px;
+    overflow:hidden;
+    background:#000;
+  }
 
-    /* Boutons flottants */
-    .controls-overlay {
-      position:absolute;
-      bottom:60px;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:20px;
-      opacity:1;
-      transition: opacity 0.4s;
-    }
+  video {
+    width:100%;
+    display:block;
+  }
 
-    .controls-overlay.hidden {
-      opacity:0;
-      pointer-events:none;
-    }
+  /* Overlay YouTube-like */
+  .overlay {
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    pointer-events:none;
+  }
 
-    .control-btn {
-      background:rgba(0,0,0,0.6);
-      border:none;
-      border-radius:50%;
-      width:50px;
-      height:50px;
-      color:white;
-      font-size:20px;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition:transform 0.2s, background 0.2s;
-    }
-    .control-btn:hover {
-      transform:scale(1.1);
-      background:rgba(0,0,0,0.8);
-    }
+  .center-controls {
+    display:flex; justify-content:center; align-items:center;
+    gap:40px;
+    pointer-events:auto;
+    opacity:1; transition:opacity 0.3s;
+  }
 
-    /* Progress + temps */
-    .progress-container {
-      position:absolute;
-      bottom:0;
-      left:0;
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:5px 10px;
-      background:rgba(0,0,0,0.4);
-    }
+  .center-controls button {
+    font-size:24px;
+    padding:15px 20px;
+    border:none;
+    border-radius:50%;
+    background:rgba(0,0,0,0.6);
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+  }
 
-    .time-display {
-      color:white;
-      font-size:14px;
-      font-weight:500;
-      min-width:90px;
-      text-align:center;
-    }
+  .bottom-controls {
+    display:flex; align-items:center;
+    justify-content:space-between;
+    background:rgba(0,0,0,0.6);
+    padding:10px;
+    pointer-events:auto;
+  }
 
-    .progress-bar {
-      flex:1;
-      margin:0 10px;
-      height:6px;
-      -webkit-appearance:none;
-      background:#ccc;
-      border-radius:3px;
-    }
-    .progress-bar::-webkit-slider-thumb {
-      -webkit-appearance:none;
-      width:12px; height:12px;
-      background:#4364f7;
-      border-radius:50%;
-      cursor:pointer;
-    }
+  .bottom-controls input[type=range] { width:70%; }
+  .bottom-controls button {
+    font-size:20px;
+    background:none;
+    border:none;
+    color:white;
+    cursor:pointer;
+  }
 
-    /* Bouton retour aux vidéos */
-    .back-btn {
-      position:absolute;
-      bottom:10px;
-      left:50%;
-      transform:translateX(-50%);
-      background:rgba(0,0,0,0.6);
-      color:white;
-      border:none;
-      border-radius:20px;
-      padding:8px 20px;
-      cursor:pointer;
-      font-weight:600;
-      transition:background 0.2s;
-    }
-    .back-btn:hover { background:rgba(0,0,0,0.8); }
+  .time {
+    color:white; font-size:14px;
+  }
 
-    .video-title {
-      text-align:center;
-      font-size:24px;
-      font-weight:700;
-      color:#0052d4;
-      margin-top:15px;
-    }
-
-    .play-button {
-      position:absolute;
-      top:50%;
-      left:50%;
-      transform:translate(-50%, -50%);
-      font-size:60px;
-      color:white;
-      cursor:pointer;
-      opacity:0.8;
-      transition:opacity 0.2s;
-      z-index:2;
-    }
-    .play-button:hover { opacity:1; }
-  </style>
+  .back-btn {
+    display:block;
+    margin:10px auto 30px auto;
+    padding:10px 25px;
+    font-weight:600;
+    border-radius:6px;
+    border:none;
+    background:#4364f7;
+    color:white;
+    cursor:pointer;
+  }
+</style>
 </head>
 <body>
 
 <header>
-  <div class="banner"> Arrachetonchibre </div>
+  <div class="banner">Arrachetonchibre</div>
 </header>
 
-<div class="video-container">
+<div class="search-bar">
+  <input type="text" placeholder="Rechercher une vidéo...">
+</div>
+
+<div class="video-container" id="videoContainer">
   <video id="myVideo" poster="https://via.placeholder.com/800x450.png?text=Video+Thumbnail">
     <source src="https://dl.dropboxusercontent.com/s/1w1srj7b5wsswhq0yctvu/video1.mp4" type="video/mp4">
     Ton navigateur ne supporte pas la lecture de vidéos.
   </video>
 
-  <div class="play-button" id="playBtn">&#9658;</div>
+  <div class="overlay" id="overlay">
+    <div class="center-controls" id="centerControls">
+      <button class="rewind-btn">⏪ 10s</button>
+      <button class="play-btn">▶</button>
+      <button class="forward-btn">10s ⏩</button>
+    </div>
 
-  <div class="controls-overlay" id="controlsOverlay">
-    <button class="control-btn" id="rewindBtn">&#x23EA;</button>
-    <button class="control-btn" id="playPauseBtn">&#9658;</button>
-    <button class="control-btn" id="forwardBtn">&#x23E9;</button>
-    <button class="control-btn" id="fullscreenBtn">&#x26F6;</button>
+    <div class="bottom-controls">
+      <span class="time" id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0" min="0" max="100">
+      <span class="time" id="totalTime">0:00</span>
+      <button id="fullscreenBtn">⛶</button>
+    </div>
   </div>
-
-  <div class="progress-container">
-    <div class="time-display" id="currentTime">0:00</div>
-    <input type="range" id="progressBar" class="progress-bar" value="0" min="0" max="100">
-    <div class="time-display" id="totalTime">0:00</div>
-  </div>
-
-  <button class="back-btn" onclick="window.location.href='videos.html'">⟵ Retour aux vidéos</button>
 </div>
 
 <div class="video-title">Titre de la vidéo ici</div>
+<button class="back-btn" onclick="window.location.href='videos.html'">← Retour aux vidéos</button>
 
 <script>
-  const video = document.getElementById("myVideo");
-  const playBtn = document.getElementById("playBtn");
-  const playPauseBtn = document.getElementById("playPauseBtn");
-  const rewindBtn = document.getElementById("rewindBtn");
-  const forwardBtn = document.getElementById("forwardBtn");
-  const fullscreenBtn = document.getElementById("fullscreenBtn");
-  const progressBar = document.getElementById("progressBar");
-  const controlsOverlay = document.getElementById("controlsOverlay");
-  const currentTimeDisplay = document.getElementById("currentTime");
-  const totalTimeDisplay = document.getElementById("totalTime");
+const video = document.getElementById("myVideo");
+const playBtn = document.querySelector(".play-btn");
+const rewindBtn = document.querySelector(".rewind-btn");
+const forwardBtn = document.querySelector(".forward-btn");
+const overlay = document.getElementById("overlay");
+const progressBar = document.getElementById("progressBar");
+const currentTimeEl = document.getElementById("currentTime");
+const totalTimeEl = document.getElementById("totalTime");
 
-  function formatTime(seconds) {
-    const min = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    return `${min}:${sec < 10 ? '0'+sec : sec}`;
+// Play/Pause
+playBtn.addEventListener("click", togglePlay);
+video.addEventListener("click", togglePlay);
+function togglePlay(){
+  if(video.paused) video.play();
+  else video.pause();
+  updatePlayButton();
+}
+
+function updatePlayButton(){
+  playBtn.textContent = video.paused ? "▶" : "❚❚";
+}
+
+// Rewind/Forward
+rewindBtn.addEventListener("click", () => { video.currentTime -= 10; });
+forwardBtn.addEventListener("click", () => { video.currentTime += 10; });
+
+// Progression
+video.addEventListener("timeupdate", () => {
+  progressBar.value = (video.currentTime / video.duration) * 100;
+  currentTimeEl.textContent = formatTime(video.currentTime);
+  totalTimeEl.textContent = formatTime(video.duration);
+});
+progressBar.addEventListener("input", () => { video.currentTime = (progressBar.value/100)*video.duration; });
+
+// Fullscreen
+document.getElementById("fullscreenBtn").addEventListener("click", () => {
+  if(video.requestFullscreen) video.requestFullscreen();
+  else if(video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+  else if(video.msRequestFullscreen) video.msRequestFullscreen();
+});
+
+// Overlay auto-hide like YouTube
+let hideTimeout;
+function showOverlay(){
+  overlay.style.opacity = 1;
+  clearTimeout(hideTimeout);
+  if(!video.paused){
+    hideTimeout = setTimeout(()=>{ overlay.style.opacity=0; }, 3000);
   }
+}
+video.addEventListener("mousemove", showOverlay);
+video.addEventListener("pause", showOverlay);
+video.addEventListener("play", () => { hideTimeout = setTimeout(()=>{ overlay.style.opacity=0; }, 3000); });
 
-  // Play central
-  playBtn.addEventListener("click", () => {
-    video.play();
-    playBtn.style.display = "none";
-  });
+// Format time
+function formatTime(sec){
+  const m = Math.floor(sec/60);
+  const s = Math.floor(sec%60);
+  return m + ":" + (s<10?'0':'') + s;
+}
 
-  // Play/Pause overlay
-  playPauseBtn.addEventListener("click", () => {
-    if(video.paused){
-      video.play();
-      playBtn.style.display = "none";
-      playPauseBtn.innerHTML = "&#10074;&#10074;"; // pause icon
-    } else {
-      video.pause();
-      playBtn.style.display = "block";
-      playPauseBtn.innerHTML = "&#9658;"; // play icon
-    }
-  });
-
-  // Reculer/Avancer 10s
-  rewindBtn.addEventListener("click", () => { video.currentTime -= 10; });
-  forwardBtn.addEventListener("click", () => { video.currentTime += 10; });
-
-  // Fullscreen
-  fullscreenBtn.addEventListener("click", () => {
-    if(video.requestFullscreen) video.requestFullscreen();
-    else if(video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-    else if(video.msRequestFullscreen) video.msRequestFullscreen();
-  });
-
-  // Progress bar
-  video.addEventListener("timeupdate", () => {
-    progressBar.value = (video.currentTime / video.duration) * 100;
-    currentTimeDisplay.textContent = formatTime(video.currentTime);
-    totalTimeDisplay.textContent = formatTime(video.duration);
-  });
-  progressBar.addEventListener("input", () => {
-    video.currentTime = (progressBar.value / 100) * video.duration;
-  });
-
-  // Masquer les controls quand la vidéo joue
-  video.addEventListener("play", () => {
-    setTimeout(() => { controlsOverlay.classList.add("hidden"); }, 2000);
-  });
-  video.addEventListener("pause", () => {
-    controlsOverlay.classList.remove("hidden");
-  });
-  video.addEventListener("mousemove", () => {
-    controlsOverlay.classList.remove("hidden");
-    setTimeout(() => { controlsOverlay.classList.add("hidden"); }, 2000);
-  });
-
+// Initialize
+video.addEventListener("loadedmetadata", () => { totalTimeEl.textContent = formatTime(video.duration); });
+updatePlayButton();
 </script>
+
 </body>
-  </html>
-  
+</html>

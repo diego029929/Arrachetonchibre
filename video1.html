@@ -1,225 +1,153 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Je joue à Action ou Vérité avec mon demi-frère !</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    margin:0; padding:0;
-    background:#f0f2f5;
-    color:#333;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecteur Vidéo</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-  header { text-align:center; padding:30px; background:#f0f2f5; }
-  .banner {
-    display:inline-block;
-    background: linear-gradient(135deg,#0052d4,#4364f7,#6fb1fc);
-    color:white;
-    padding:15px 40px;
-    font-size:28px;
-    font-weight:700;
-    letter-spacing:1px;
-    border-radius:50px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.2);
-  }
+    video {
+      width: 100%;
+      height: auto;
+      max-height: 80vh;
+      background: black;
+    }
 
-  .search-bar { text-align:center; margin:20px 0; }
-  .search-bar input {
-    width:60%; max-width:500px;
-    padding:12px 15px;
-    font-size:16px;
-    border:1px solid #ccc;
-    border-radius:25px;
-    outline:none;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-  }
-  .search-bar input:focus {
-    border-color:#4364f7;
-    box-shadow:0 4px 10px rgba(0,82,212,0.2);
-  }
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-  .video-container {
-    max-width:800px;
-    margin:40px auto;
-    position:relative;
-    border-radius:15px;
-    overflow:hidden;
-    background:#000;
-  }
+    /* Barre de progression */
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+    .progress {
+      height: 100%;
+      width: 0;
+      background: red;
+      border-radius: 3px;
+    }
 
-  video {
-    width:100%;
-    display:block;
-  }
+    /* Boutons */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+    }
+    button {
+      background: rgba(0,0,0,0.6);
+      border: none;
+      color: white;
+      font-size: 18px;
+      padding: 15px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:active {
+      transform: scale(0.95);
+    }
 
-  /* Overlay YouTube-like */
-  .overlay {
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    pointer-events:none;
-  }
-
-  .center-controls {
-    display:flex; justify-content:center; align-items:center;
-    gap:40px;
-    pointer-events:auto;
-    opacity:1; transition:opacity 0.3s;
-  }
-
-  .center-controls button {
-    font-size:24px;
-    padding:15px 20px;
-    border:none;
-    border-radius:50%;
-    background:rgba(0,0,0,0.6);
-    color:white;
-    cursor:pointer;
-    font-weight:600;
-  }
-
-  .bottom-controls {
-    display:flex; align-items:center;
-    justify-content:space-between;
-    background:rgba(0,0,0,0.6);
-    padding:10px;
-    pointer-events:auto;
-  }
-
-  .bottom-controls input[type=range] { width:70%; }
-  .bottom-controls button {
-    font-size:20px;
-    background:none;
-    border:none;
-    color:white;
-    cursor:pointer;
-  }
-
-  .time {
-    color:white; font-size:14px;
-  }
-
-  .back-btn {
-    display:block;
-    margin:10px auto 30px auto;
-    padding:10px 25px;
-    font-weight:600;
-    border-radius:6px;
-    border:none;
-    background:#4364f7;
-    color:white;
-    cursor:pointer;
-  }
-</style>
+    /* Bouton retour */
+    .back {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #4364f7;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 16px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="banner">Arrachetonchibre</div>
-</header>
+  <!-- Vidéo -->
+  <video id="video" src="https://dl.dropboxusercontent.com/s/1w1srj7b5wsswhq0yctvu/video1.mp4" controlslist="nodownload"></video>
 
-<div class="search-bar">
-  <input type="text" placeholder="Rechercher une vidéo...">
-</div>
-
-<div class="video-container" id="videoContainer">
-  <video id="myVideo" poster="https://via.placeholder.com/800x450.png?text=Video+Thumbnail">
-    <source src="https://v2.cdnde.com/x2/upload_6e98c1a8e17d2b3a4a1840055bed7412/44319/JOPORN_NET_44319_720p.mp4"
-    Ton navigateur ne supporte pas la lecture de vidéos.
-  </video>
-
-  <div class="overlay" id="overlay">
-    <div class="center-controls" id="centerControls">
-      <button class="rewind-btn">⏪ 10s</button>
-      <button class="play-btn">▶</button>
-      <button class="forward-btn">10s ⏩</button>
+  <!-- Contrôles -->
+  <div class="controls">
+    <div class="progress-container" id="progressContainer">
+      <div class="progress" id="progress"></div>
     </div>
-
-    <div class="bottom-controls">
-      <span class="time" id="currentTime">0:00</span>
-      <input type="range" id="progressBar" value="0" min="0" max="100">
-      <span class="time" id="totalTime">0:00</span>
-      <button id="fullscreenBtn">⛶</button>
+    <div class="buttons">
+      <button id="back10">- 10 sec</button>
+      <button id="playPause">Lecture</button>
+      <button id="forward10">+ 10 sec</button>
     </div>
   </div>
-</div>
 
-<div class="video-title">Titre de la vidéo ici</div>
-<button class="back-btn" onclick="window.location.href='videos.html'">← Retour aux vidéos</button>
+  <!-- Retour -->
+  <a href="videos.html" class="back">Retour</a>
 
-<script>
-const video = document.getElementById("myVideo");
-const playBtn = document.querySelector(".play-btn");
-const rewindBtn = document.querySelector(".rewind-btn");
-const forwardBtn = document.querySelector(".forward-btn");
-const overlay = document.getElementById("overlay");
-const progressBar = document.getElementById("progressBar");
-const currentTimeEl = document.getElementById("currentTime");
-const totalTimeEl = document.getElementById("totalTime");
+  <script>
+    const video = document.getElementById('video');
+    const playPause = document.getElementById('playPause');
+    const back10 = document.getElementById('back10');
+    const forward10 = document.getElementById('forward10');
+    const progress = document.getElementById('progress');
+    const progressContainer = document.getElementById('progressContainer');
 
-// Play/Pause
-playBtn.addEventListener("click", togglePlay);
-video.addEventListener("click", togglePlay);
-function togglePlay(){
-  if(video.paused) video.play();
-  else video.pause();
-  updatePlayButton();
-}
+    // Play / Pause
+    playPause.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        playPause.textContent = "Pause";
+      } else {
+        video.pause();
+        playPause.textContent = "Lecture";
+      }
+    });
 
-function updatePlayButton(){
-  playBtn.textContent = video.paused ? "▶" : "❚❚";
-}
+    // -10s
+    back10.addEventListener('click', () => {
+      video.currentTime -= 10;
+    });
 
-// Rewind/Forward
-rewindBtn.addEventListener("click", () => { video.currentTime -= 10; });
-forwardBtn.addEventListener("click", () => { video.currentTime += 10; });
+    // +10s
+    forward10.addEventListener('click', () => {
+      video.currentTime += 10;
+    });
 
-// Progression
-video.addEventListener("timeupdate", () => {
-  progressBar.value = (video.currentTime / video.duration) * 100;
-  currentTimeEl.textContent = formatTime(video.currentTime);
-  totalTimeEl.textContent = formatTime(video.duration);
-});
-progressBar.addEventListener("input", () => { video.currentTime = (progressBar.value/100)*video.duration; });
+    // Mise à jour de la barre de progression
+    video.addEventListener('timeupdate', () => {
+      const percent = (video.currentTime / video.duration) * 100;
+      progress.style.width = percent + "%";
+    });
 
-// Fullscreen
-document.getElementById("fullscreenBtn").addEventListener("click", () => {
-  if(video.requestFullscreen) video.requestFullscreen();
-  else if(video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-  else if(video.msRequestFullscreen) video.msRequestFullscreen();
-});
-
-// Overlay auto-hide like YouTube
-let hideTimeout;
-function showOverlay(){
-  overlay.style.opacity = 1;
-  clearTimeout(hideTimeout);
-  if(!video.paused){
-    hideTimeout = setTimeout(()=>{ overlay.style.opacity=0; }, 3000);
-  }
-}
-video.addEventListener("mousemove", showOverlay);
-video.addEventListener("pause", showOverlay);
-video.addEventListener("play", () => { hideTimeout = setTimeout(()=>{ overlay.style.opacity=0; }, 3000); });
-
-// Format time
-function formatTime(sec){
-  const m = Math.floor(sec/60);
-  const s = Math.floor(sec%60);
-  return m + ":" + (s<10?'0':'') + s;
-}
-
-// Initialize
-video.addEventListener("loadedmetadata", () => { totalTimeEl.textContent = formatTime(video.duration); });
-updatePlayButton();
-</script>
+    // Cliquer sur la barre = avancer/reculer
+    progressContainer.addEventListener('click', (e) => {
+      const width = progressContainer.clientWidth;
+      const clickX = e.offsetX;
+      const duration = video.duration;
+      video.currentTime = (clickX / width) * duration;
+    });
+  </script>
 
 </body>
-</html>
+  </html>
+  

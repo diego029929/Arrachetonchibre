@@ -27,89 +27,92 @@
       box-shadow:0 4px 15px rgba(0,0,0,0.2);
     }
 
-    /* Barre de recherche */
-    .search-bar { text-align:center; margin:20px 0; }
-    .search-bar input {
-      width:60%; max-width:500px;
-      padding:12px 15px;
-      font-size:16px;
-      border:1px solid #ccc;
-      border-radius:25px;
-      outline:none;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1);
-      transition: all 0.3s ease;
-    }
-    .search-bar input:focus {
-      border-color:#4364f7;
-      box-shadow:0 4px 10px rgba(0,82,212,0.2);
-    }
-
     /* Conteneur vidéo */
     .video-container {
-      max-width:800px;
+      max-width:900px;
       margin:40px auto;
       position:relative;
+      background:#000;
+      border-radius:12px;
+      overflow:hidden;
     }
 
     video {
       width:100%;
-      border-radius:15px;
-      background:#000;
       display:block;
+      border-radius:12px;
     }
 
-    /* Bouton play central */
-    .play-button {
+    /* Boutons flottants */
+    .controls-overlay {
       position:absolute;
-      top:50%; left:50%;
-      transform:translate(-50%, -50%);
-      font-size:60px;
-      color:white;
-      cursor:pointer;
-      opacity:0.8;
-      transition:opacity 0.2s;
-      z-index:2;
-    }
-    .play-button:hover { opacity:1; }
-
-    /* Barre de contrôle */
-    .controls {
+      bottom:10%;
+      left:50%;
+      transform:translateX(-50%);
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      margin-top:10px;
+      justify-content:center;
+      gap:30px;
+      opacity:1;
+      transition: opacity 0.4s;
     }
-    .progress {
-      flex:1;
-      margin:0 10px;
+
+    .controls-overlay.hidden {
+      opacity:0;
+      pointer-events:none;
     }
-    input[type=range] {
+
+    .top-left {
+      position:absolute;
+      top:15px;
+      left:15px;
+    }
+
+    .bottom-right {
+      position:absolute;
+      bottom:15px;
+      right:15px;
+    }
+
+    .control-btn {
+      background:rgba(0,0,0,0.6);
+      border:none;
+      border-radius:50%;
+      width:55px;
+      height:55px;
+      color:white;
+      font-size:22px;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:transform 0.2s, background 0.2s;
+    }
+    .control-btn:hover {
+      transform:scale(1.1);
+      background:rgba(0,0,0,0.8);
+    }
+
+    /* Barre de progression */
+    .progress-bar {
+      position:absolute;
+      bottom:0;
+      left:0;
       width:100%;
-      -webkit-appearance:none;
-      background:#ccc;
-      height:5px;
-      border-radius:5px;
+      height:6px;
+      appearance:none;
+      background:rgba(255,255,255,0.4);
+      cursor:pointer;
     }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance:none;
-      width:15px; height:15px;
+    .progress-bar::-webkit-slider-thumb {
+      appearance:none;
+      width:14px;
+      height:14px;
       background:#4364f7;
       border-radius:50%;
       cursor:pointer;
     }
-    button {
-      padding:8px 12px;
-      border:none;
-      border-radius:5px;
-      background:#4364f7;
-      color:white;
-      cursor:pointer;
-      font-weight:600;
-      transition:transform 0.2s;
-    }
-    button:hover { transform:scale(1.05); }
 
-    /* Titre vidéo */
     .video-title {
       text-align:center;
       font-size:24px;
@@ -125,65 +128,91 @@
   <div class="banner"> Arrachetonchibre </div>
 </header>
 
-<div class="search-bar">
-  <input type="text" placeholder="Rechercher une vidéo...">
-</div>
-
-<div class="video-container">
+<div class="video-container" id="videoContainer">
   <video id="myVideo" poster="https://via.placeholder.com/800x450.png?text=Video+Thumbnail">
-    <source src=https://dl.dropboxusercontent.com/scl/fi/1w1srj7b5wsswhq0yctvu/video1.mp4?rlkey=417crj3n1epnvj1kpq23vg3eu&st=zxgia478" type="video/mp4">
+    <source src="https://dl.dropboxusercontent.com/scl/fi/1w1srj7b5wsswhq0yctvu/video1.mp4?rlkey=417crj3n1epnvj1kpq23vg3eu&st=zxgia478" type="video/mp4">
     Ton navigateur ne supporte pas la lecture de vidéos.
   </video>
-  <div class="play-button" id="playBtn">&#9658;</div>
 
-  <div class="controls">
-    <button id="playPauseBtn">Play/Pause</button>
-    <input type="range" id="progressBar" value="0" min="0" max="100" class="progress">
-    <button id="fullscreenBtn">Fullscreen</button>
+  <!-- Bouton retour -->
+  <button class="control-btn top-left" onclick="window.location.href='videos.html'">⟵</button>
+
+  <!-- Contrôles flottants -->
+  <div class="controls-overlay" id="controlsOverlay">
+    <button class="control-btn" id="back10">⏪ -10s</button>
+    <button class="control-btn" id="playPause">▶️/⏸️</button>
+    <button class="control-btn" id="forward10">⏩ +10s</button>
   </div>
+
+  <!-- Bouton fullscreen -->
+  <button class="control-btn bottom-right" id="fullscreenBtn">⛶</button>
+
+  <!-- Progress bar -->
+  <input type="range" id="progressBar" value="0" min="0" max="100" class="progress-bar">
 </div>
 
 <div class="video-title">Titre de la vidéo ici</div>
 
 <script>
   const video = document.getElementById("myVideo");
-  const playBtn = document.getElementById("playBtn");
-  const playPauseBtn = document.getElementById("playPauseBtn");
+  const playPause = document.getElementById("playPause");
+  const back10 = document.getElementById("back10");
+  const forward10 = document.getElementById("forward10");
   const progressBar = document.getElementById("progressBar");
   const fullscreenBtn = document.getElementById("fullscreenBtn");
+  const overlay = document.getElementById("controlsOverlay");
+  const container = document.getElementById("videoContainer");
 
-  // Play central
-  playBtn.addEventListener("click", () => {
-    video.play();
-    playBtn.style.display = "none";
+  let hideControlsTimeout;
+
+  // Play / Pause
+  playPause.addEventListener("click", () => {
+    if (video.paused) video.play();
+    else video.pause();
   });
 
-  // Play/Pause bouton
-  playPauseBtn.addEventListener("click", () => {
-    if(video.paused) {
-      video.play();
-      playBtn.style.display = "none";
-    } else {
-      video.pause();
-      playBtn.style.display = "block";
-    }
+  // Back 10s
+  back10.addEventListener("click", () => {
+    video.currentTime -= 10;
   });
 
-  // Barre de progression
+  // Forward 10s
+  forward10.addEventListener("click", () => {
+    video.currentTime += 10;
+  });
+
+  // Progress bar
   video.addEventListener("timeupdate", () => {
     progressBar.value = (video.currentTime / video.duration) * 100;
   });
+
   progressBar.addEventListener("input", () => {
     video.currentTime = (progressBar.value / 100) * video.duration;
   });
 
   // Fullscreen
   fullscreenBtn.addEventListener("click", () => {
-    if(video.requestFullscreen) video.requestFullscreen();
-    else if(video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-    else if(video.msRequestFullscreen) video.msRequestFullscreen();
+    if (container.requestFullscreen) container.requestFullscreen();
+    else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+    else if (container.msRequestFullscreen) container.msRequestFullscreen();
   });
+
+  // Masquer les contrôles quand inactif
+  function showControls() {
+    overlay.classList.remove("hidden");
+    fullscreenBtn.style.opacity = "1";
+    clearTimeout(hideControlsTimeout);
+    hideControlsTimeout = setTimeout(() => {
+      overlay.classList.add("hidden");
+      fullscreenBtn.style.opacity = "0";
+    }, 3000);
+  }
+
+  container.addEventListener("mousemove", showControls);
+  video.addEventListener("play", showControls);
+  video.addEventListener("pause", showControls);
 </script>
 
 </body>
-</html>
+    </html>
+    

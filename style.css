@@ -52,7 +52,7 @@ header {
   box-shadow: 0 4px 10px rgba(0,82,212,0.2);
 }
 
-/* ---- Cadres Vidéos et Photos ---- */
+/* ---- Cartes Vidéos / Photos ---- */
 .choice-container {
   display: flex;
   justify-content: center;

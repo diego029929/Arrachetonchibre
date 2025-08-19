@@ -173,6 +173,15 @@
       background: #0052d4;
       transform: scale(1.05);
     }
+
+    /* ---- Message Aucun résultat ---- */
+    .no-result {
+      text-align: center;
+      font-size: 20px;
+      color: #888;
+      display: none;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -181,7 +190,7 @@
   </header>
 
   <div class="search-bar">
-    <input type="text" placeholder="Rechercher une vidéo...">
+    <input type="text" id="searchInput" placeholder="Rechercher une vidéo...">
   </div>
 
   <h2 class="section-title">Vidéos</h2>
@@ -197,14 +206,23 @@
   </div>
 
   <div class="videos" id="videoContainer">
-    <!-- Exemple de 30 vidéos -->
-    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
-    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
-    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
-    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
-    <div class="video-card"><div class="video-placeholder">ici mets la vidéo</div><div class="title-placeholder">ici mets le titre</div></div>
-    <!-- Ajoute plus de blocs si nécessaire -->
+    <!-- Exemple de 30 vidéos avec titre -->
+    <div class="video-card" data-title="Vidéo amusante chat">
+      <div class="video-placeholder">ici mets la vidéo</div>
+      <div class="title-placeholder">Vidéo amusante chat</div>
+    </div>
+    <div class="video-card" data-title="Tutoriel Python débutant">
+      <div class="video-placeholder">ici mets la vidéo</div>
+      <div class="title-placeholder">Tutoriel Python débutant</div>
+    </div>
+    <div class="video-card" data-title="Compilation fails drôles">
+      <div class="video-placeholder">ici mets la vidéo</div>
+      <div class="title-placeholder">Compilation fails drôles</div>
+    </div>
+    <!-- Ajoute plus de vidéos selon besoin -->
   </div>
+
+  <div class="no-result" id="noResult">Aucun résultat</div>
 
   <div class="load-more-container">
     <button id="loadMore">Afficher plus</button>
@@ -232,11 +250,32 @@
     loadMoreBtn.addEventListener("click", () => {
       const hiddenVideos = videoContainer.querySelectorAll(".video-card[style*='display: none']");
       hiddenVideos.forEach(video => video.style.display = "block");
-      loadMoreBtn.style.display = "none"; // cacher le bouton après affichage complet
+      loadMoreBtn.style.display = "none";
     });
 
-    // Initialiser la limite au chargement
     limitVideos();
+
+    // Barre de recherche intelligente
+    const searchInput = document.getElementById("searchInput");
+    const noResult = document.getElementById("noResult");
+    const videos = Array.from(videoContainer.querySelectorAll(".video-card"));
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase().trim();
+      let anyVisible = false;
+
+      videos.forEach(video => {
+        const title = video.dataset.title.toLowerCase();
+        if(title.includes(query) || query === "") {
+          video.style.display = "flex";
+          anyVisible = true;
+        } else {
+          video.style.display = "none";
+        }
+      });
+
+      noResult.style.display = anyVisible ? "none" : "block";
+    });
   </script>
 </body>
 </html>

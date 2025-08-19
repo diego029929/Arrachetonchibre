@@ -1,123 +1,123 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Je joue à Action ou Vérité avec mon demi-frère !</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    margin:0; padding:0;
-    background:#f0f2f5;
-    color:#333;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Je joue à Action ou Vérité avec mon demi-frère !</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin:0; padding:0;
+      background:#f0f2f5;
+      color:#333;
+    }
 
-  /* Bannière */
-  header { text-align:center; padding:30px; background:#f0f2f5; }
-  .banner {
-    display:inline-block;
-    background: linear-gradient(135deg,#0052d4,#4364f7,#6fb1fc);
-    color:white;
-    padding:15px 40px;
-    font-size:28px;
-    font-weight:700;
-    letter-spacing:1px;
-    border-radius:50px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.2);
-  }
+    /* Bannière */
+    header { text-align:center; padding:30px; background:#f0f2f5; }
+    .banner {
+      display:inline-block;
+      background: linear-gradient(135deg,#0052d4,#4364f7,#6fb1fc);
+      color:white;
+      padding:15px 40px;
+      font-size:28px;
+      font-weight:700;
+      letter-spacing:1px;
+      border-radius:50px;
+      box-shadow:0 4px 15px rgba(0,0,0,0.2);
+    }
 
-  /* Barre de recherche */
-  .search-bar { text-align:center; margin:20px 0; }
-  .search-bar input {
-    width:60%; max-width:500px;
-    padding:12px 15px;
-    font-size:16px;
-    border:1px solid #ccc;
-    border-radius:25px;
-    outline:none;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-  }
-  .search-bar input:focus {
-    border-color:#4364f7;
-    box-shadow:0 4px 10px rgba(0,82,212,0.2);
-  }
+    /* Barre de recherche */
+    .search-bar { text-align:center; margin:20px 0; }
+    .search-bar input {
+      width:60%; max-width:500px;
+      padding:12px 15px;
+      font-size:16px;
+      border:1px solid #ccc;
+      border-radius:25px;
+      outline:none;
+      box-shadow:0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    .search-bar input:focus {
+      border-color:#4364f7;
+      box-shadow:0 4px 10px rgba(0,82,212,0.2);
+    }
 
-  /* Conteneur vidéo */
-  .video-container {
-    max-width:800px;
-    margin:40px auto;
-    position:relative;
-  }
+    /* Conteneur vidéo */
+    .video-container {
+      max-width:800px;
+      margin:40px auto;
+      position:relative;
+    }
 
-  video {
-    width:100%;
-    border-radius:15px;
-    background:#000;
-    display:block;
-  }
+    video {
+      width:100%;
+      border-radius:15px;
+      background:#000;
+      display:block;
+    }
 
-  /* Bouton play central */
-  .play-button {
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%, -50%);
-    font-size:60px;
-    color:white;
-    cursor:pointer;
-    opacity:0.8;
-    transition:opacity 0.2s;
-    z-index:2;
-  }
-  .play-button:hover { opacity:1; }
+    /* Bouton play central */
+    .play-button {
+      position:absolute;
+      top:50%; left:50%;
+      transform:translate(-50%, -50%);
+      font-size:60px;
+      color:white;
+      cursor:pointer;
+      opacity:0.8;
+      transition:opacity 0.2s;
+      z-index:2;
+    }
+    .play-button:hover { opacity:1; }
 
-  /* Barre de contrôle */
-  .controls {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:10px;
-  }
-  .progress {
-    flex:1;
-    margin:0 10px;
-  }
-  input[type=range] {
-    width:100%;
-    -webkit-appearance:none;
-    background:#ccc;
-    height:5px;
-    border-radius:5px;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance:none;
-    width:15px; height:15px;
-    background:#4364f7;
-    border-radius:50%;
-    cursor:pointer;
-  }
-  button {
-    padding:8px 12px;
-    border:none;
-    border-radius:5px;
-    background:#4364f7;
-    color:white;
-    cursor:pointer;
-    font-weight:600;
-    transition:transform 0.2s;
-  }
-  button:hover { transform:scale(1.05); }
+    /* Barre de contrôle */
+    .controls {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:10px;
+    }
+    .progress {
+      flex:1;
+      margin:0 10px;
+    }
+    input[type=range] {
+      width:100%;
+      -webkit-appearance:none;
+      background:#ccc;
+      height:5px;
+      border-radius:5px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance:none;
+      width:15px; height:15px;
+      background:#4364f7;
+      border-radius:50%;
+      cursor:pointer;
+    }
+    button {
+      padding:8px 12px;
+      border:none;
+      border-radius:5px;
+      background:#4364f7;
+      color:white;
+      cursor:pointer;
+      font-weight:600;
+      transition:transform 0.2s;
+    }
+    button:hover { transform:scale(1.05); }
 
-  /* Titre vidéo */
-  .video-title {
-    text-align:center;
-    font-size:24px;
-    font-weight:700;
-    color:#0052d4;
-    margin-top:15px;
-  }
-</style>
+    /* Titre vidéo */
+    .video-title {
+      text-align:center;
+      font-size:24px;
+      font-weight:700;
+      color:#0052d4;
+      margin-top:15px;
+    }
+  </style>
 </head>
 <body>
 
@@ -131,7 +131,8 @@
 
 <div class="video-container">
   <video id="myVideo" poster="https://via.placeholder.com/800x450.png?text=Video+Thumbnail">
-    <source src="https://www.dropbox.com/scl/fi/1w1srj7b5wsswhq0yctvu/video1.mp4?rlkey=417crj3n1epnvj1kpq23vg3eu&st=zxgia478&dl=0" type="video/mp4>
+    <source src="https://www.dropbox.com/scl/fi/1w1srj7b5wsswhq0yctvu/video1.mp4?rlkey=417crj3n1epnvj1kpq23vg3eu&st=zxgia478&raw=1" type="video/mp4">
+    Ton navigateur ne supporte pas la lecture de vidéos.
   </video>
   <div class="play-button" id="playBtn">&#9658;</div>
 

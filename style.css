@@ -1,0 +1,83 @@
+/* ---- Style général ---- */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f0f2f5;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ---- Bannière ---- */
+header {
+  width: 100%;
+  background: #f0f2f5;
+  padding: 30px 0;
+  text-align: center;
+}
+.banner {
+  display: inline-block;
+  background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+  color: white;
+  padding: 15px 40px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* ---- Barre de recherche ---- */
+.search-bar {
+  text-align: center;
+  margin: 25px 0;
+  width: 100%;
+}
+.search-bar input {
+  width: 60%;
+  max-width: 500px;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+.search-bar input:focus {
+  border-color: #4364f7;
+  box-shadow: 0 4px 10px rgba(0,82,212,0.2);
+}
+
+/* ---- Cadres Vidéos et Photos ---- */
+.choice-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+.choice-card {
+  width: 200px;
+  height: 150px;
+  background: linear-gradient(135deg, #4364f7, #6fb1fc);
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+.choice-card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
